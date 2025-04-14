@@ -6,11 +6,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 
 # Load dataset
-@st.cache_data
-
+@st.cache
 def load_data():
     # Corrected path format for cross-platform compatibility
-    df = pd.read_csv(r"C:\Users\USER\OneDrive\Desktop\HVAC DATASET.csv")
+    df = pd.read_csv(r"C:/Users/USER/OneDrive/Desktop/HVAC_DATASET.csv")
     
     # Ensure the 'Timestamp' column is properly converted to datetime format
     df['Timestamp'] = pd.to_datetime(df['Timestamp'], errors='coerce')  # Using 'coerce' to handle invalid date formats
@@ -20,12 +19,14 @@ def load_data():
 # Calling the function to load the data
 df = load_data()
 
-
 # Sidebar
 st.sidebar.title("Filter Data")
 min_occupancy = st.sidebar.slider("Minimum Occupancy", 0, int(df['Occupancy_Count'].max()), 0)
 max_temp = st.sidebar.slider("Max Internal Temperature (°C)", 0, 50, 50)
 df_filtered = df[(df["Occupancy_Count"] >= min_occupancy) & (df["Temperature_C"] <= max_temp)]
+
+# Handle potential missing data in the filtered dataset
+df_filtered = df_filtered.dropna(subset=["Temperature_C", "Occupancy_Count", "HVAC_Power_Consumption_kWh", "Energy_Efficiency_%"])
 
 # Main UI
 st.title("🏠 HVAC Energy Optimization Dashboard")
@@ -80,10 +81,7 @@ with st.form("prediction_form"):
     submitted = st.form_submit_button("Predict Efficiency")
 
     if submitted:
-        input_data = pd.DataFrame([[
-            temperature, humidity, co2, occupancy, external_temp,
-            kp, ki, kd, fuzzy, isa_score, hvac_power, output_c, response_time
-        ]], columns=features)
+        input_data = pd.DataFrame([[temperature, humidity, co2, occupancy, external_temp, kp, ki, kd, fuzzy, isa_score, hvac_power, output_c, response_time]], columns=features)
 
         prediction = model.predict(input_data)[0]
         st.success(f"🔋 Predicted Energy Efficiency: {prediction:.2f}%")
