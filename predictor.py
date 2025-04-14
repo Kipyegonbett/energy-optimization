@@ -6,11 +6,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 
 # Load dataset
-def load_data():
-    # Corrected path format for Windows
-    df = pd.read_csv(r"C:\Users\USER\Downloads\energy optimization.csv")
-    
-    # Ensure the 'Timestamp' column is properly converted to datetime format
+import os
+
+file_path = r"C:\Users\USER\Downloads\energy optimization.csv"
+print("File Path: ", file_path)
+if os.path.exists(file_path):
+    print("File exists.")
+else:
+    print("File not found.")
     df['Timestamp'] = pd.to_datetime(df['Timestamp'], errors='coerce')  # Using 'coerce' to handle invalid date formats
     
     return df
