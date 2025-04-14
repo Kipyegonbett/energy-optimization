@@ -8,7 +8,7 @@ from sklearn.metrics import mean_absolute_error
 # Load dataset
 def load_data():
     # Corrected path format for Windows
-    df = pd.read_csv(r"C:\Users\USER\OneDrive\Desktop\HVAC DATASET.csv")
+    df = pd.read_csv(r"C:\Users\USER\Downloads\energy optimization.csv")
     
     # Ensure the 'Timestamp' column is properly converted to datetime format
     df['Timestamp'] = pd.to_datetime(df['Timestamp'], errors='coerce')  # Using 'coerce' to handle invalid date formats
