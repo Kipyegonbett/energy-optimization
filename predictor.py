@@ -8,7 +8,7 @@ from sklearn.metrics import mean_absolute_error
 # Load dataset
 @st.cache_data
 def load_data():
-    df = pd.read_csv("C:\Users\USER\OneDrive\Desktop\HVAC DATASET.csv")
+    df = pd.read_csv(r"C:\Users\USER\OneDrive\Desktop\HVAC DATASET.csv")
     df['Timestamp'] = pd.to_datetime(df['Timestamp'])
     return df
 
